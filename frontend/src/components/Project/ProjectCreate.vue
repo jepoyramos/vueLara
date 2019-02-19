@@ -44,4 +44,7 @@ export default {
         padding: 5px;
         width: 250px;
     }
+    button{
+        cursor: pointer;
+    }
 </style>

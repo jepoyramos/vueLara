@@ -2,10 +2,10 @@
   <div class="c-projects">
     <h1>This is Projects View</h1>
     <!-- <ProjectGrid :projects="projects" @newProjectAdded="pushProject" /> -->
-    <component :is="activeComponent"  v-bind="activeCompProps" @newProjectAdded="pushProject"></component>
+    <component :is="this.$store.state.activeComponent"  v-bind="activeCompProps"   @newProjectAdded="pushProject" @changeActComp="viewDetail" @deleteItem="deleteProject"></component>
     <hr>
-    <span>{{this.activeComponent}}</span>
-    <div class="o-projects__button">
+    <span >{{this.$store.state.activeComponent}}</span>
+    <div v-if="this.$store.state.activeComponent == 'ProjectGrid'" class="o-projects__button">
         <div @click="addProject">Add Project</div>
     </div>
   </div>
@@ -15,7 +15,7 @@
 // @ is an alias to /src
 import ProjectGrid from '../components/Project/ProjectGrid.vue'
 import ProjectCreate from '../components/Project/ProjectCreate.vue'
-
+import Project from '../components/Project/Project.vue'
 export default {
   name: 'Projects',
   data () {
@@ -24,16 +24,17 @@ export default {
         {projectTitle: "Project 1", projectDescription: "This is the first project"},
         {projectTitle: "Project 2", projectDescription: "This is the second project"},
       ],
-      activeComponent: 'ProjectGrid'
+      // activeComponent: 'ProjectGrid'
     }
   },
   components: {
     ProjectGrid: ProjectGrid,
-    ProjectCreate
+    ProjectCreate,
+    Project
   },
   computed: {
     activeCompProps(){
-      if(this.activeComponent === 'ProjectGrid'){
+      if(this.$store.state.activeComponent === 'ProjectGrid'){
         return { projects: this.projects}
       }else{
         return {projects: ''}
@@ -42,13 +43,21 @@ export default {
   },
   methods: {
     addProject(){
-      this.activeComponent = 'ProjectCreate'
+      // this.activeComponent = 'ProjectCreate'
+      this.$store.state.activeComponent = 'ProjectCreate'
     },
     pushProject(newProject){
       this.projects.push(newProject);
-      this.activeComponent = 'ProjectCreate';
-      this.activeComponent = 'ProjectGrid';
+      this.$store.state.activeComponent = 'ProjectCreate';
+      this.$store.state.activeComponent = 'ProjectGrid';
+    },
+    deleteProject(id){
+      alert(id);
+    },
+    viewDetail(){
+      this.activeComponent = 'Project';
     }
+
   }
 }
 </script>

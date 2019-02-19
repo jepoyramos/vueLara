@@ -1,33 +1,24 @@
 <template>
     <div class="c-projectsGrid">
-        <Project 
+        <Card
             v-for='(project, index) in projects' 
             :key="index" 
-            :projectTitle= project.projectTitle
-            :projectDescription= project.projectDescription
-            class="o-projectGrid__project"
+            :ID="index"
+            :cardTitle= project.projectTitle
+            :cardDescription= project.projectDescription
             />
     </div>
 </template>
 <script>
-import Project from './Project.vue'
+import Card from '../Card.vue'
+
 export default {
     name: 'ProjectGrid',
     components: {
-        Project
+        Card
     },
-    props: ['projects']
+    props: ['projects'],
 }
 </script>
 <style lang="scss" scoped>
-    .o-projectGrid__project{
-        display: inline-block;
-        vertical-align: middle;
-        padding: 20px 40px;
-        border: solid 1px #696969;
-		border-radius: 5px;
-		margin: 5px;
-        text-decoration: none;
-        color: #323659;
-    }
 </style>
