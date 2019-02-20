@@ -2,7 +2,7 @@
   <div class="c-projects">
     <h1>This is Projects View</h1>
     <!-- <ProjectGrid :projects="projects" @newProjectAdded="pushProject" /> -->
-    <component :is="this.$store.state.activeComponent"  v-bind="activeCompProps"   @newProjectAdded="pushProject" @changeActComp="viewDetail" @deleteItem="deleteProject"></component>
+    <component :is="this.$store.state.activeComponent"  v-bind="activeCompProps"  @newProjectAdded="pushProject"></component>
     <hr>
     <span >{{this.$store.state.activeComponent}}</span>
     <div v-if="this.$store.state.activeComponent == 'ProjectGrid'" class="o-projects__button">
@@ -24,8 +24,15 @@ export default {
         {projectTitle: "Project 1", projectDescription: "This is the first project"},
         {projectTitle: "Project 2", projectDescription: "This is the second project"},
       ],
-      // activeComponent: 'ProjectGrid'
+      
     }
+  },
+  created(){
+    this.$eventHub.$on('deleteItem', this.delItem);
+    this.$eventHub.$on('cardClicked', this.activeCompProps);
+  },
+  beforeDestroy(){
+    this.$eventHub.$off('deleteItem');
   },
   components: {
     ProjectGrid: ProjectGrid,
@@ -33,9 +40,13 @@ export default {
     Project
   },
   computed: {
-    activeCompProps(){
+    activeCompProps(id){
       if(this.$store.state.activeComponent === 'ProjectGrid'){
         return { projects: this.projects}
+      }else if(this.$store.state.activeComponent === 'Project'){
+        return {
+          ID: id,
+        }
       }else{
         return {projects: ''}
       }
@@ -43,21 +54,16 @@ export default {
   },
   methods: {
     addProject(){
-      // this.activeComponent = 'ProjectCreate'
-      this.$store.state.activeComponent = 'ProjectCreate'
+      this.$store.state.activeComponent = 'ProjectCreate';
     },
     pushProject(newProject){
       this.projects.push(newProject);
       this.$store.state.activeComponent = 'ProjectCreate';
       this.$store.state.activeComponent = 'ProjectGrid';
     },
-    deleteProject(id){
-      alert(id);
-    },
-    viewDetail(){
-      this.activeComponent = 'Project';
+    delItem(id){
+      alert("this is " + id);
     }
-
   }
 }
 </script>

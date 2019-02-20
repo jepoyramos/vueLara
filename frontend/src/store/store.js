@@ -9,7 +9,7 @@ export const store = new Vuex.Store({
     },
     getters: {
         compo: state => {
-            return state.activeComponent = 'strep';
+            return state.activeComponent = 'step';
         }
     }
 });

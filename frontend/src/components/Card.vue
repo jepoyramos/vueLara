@@ -1,8 +1,9 @@
 <template>
-    <div class="c-card" @click="viewDetail">
+    <div class="c-card" @click="clicked(ID)"> 
         <h2 slot="cardTitle">{{cardTitle}}</h2>
         <p slot="cardDescription">{{cardDescription}}</p>
         <p slot="ID">{{ID}}</p>
+        <button @click="delItem(ID)">Delete</button>
     </div>
 </template>
 <script>
@@ -19,13 +20,14 @@ export default {
         ID: Number
     },
     methods: {
-        viewDetail(){
+        clicked(id){
             this.$store.state.activeComponent = 'Project';
+            this.$eventHub.$emit('cardClicked', id);
         },
         delItem(id){
-            this.$emit('deleteItem', id);
+            this.$eventHub.$emit('deleteItem', id);
         }
-    }
+    } 
 }
 </script>
 <style lang="scss" scoped>
