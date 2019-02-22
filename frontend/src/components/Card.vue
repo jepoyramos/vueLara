@@ -3,17 +3,11 @@
         <h2 slot="cardTitle">{{cardTitle}}</h2>
         <p slot="cardDescription">{{cardDescription}}</p>
         <p slot="ID">{{ID}}</p>
-        <button @click="delItem(ID)">Delete</button>
     </div>
 </template>
 <script>
 export default {
     name: 'Card',
-    data () {
-        return{
-            cards: true
-        }
-    },
     props: {
         cardTitle: String,
         cardDescription: String,
@@ -23,9 +17,6 @@ export default {
         clicked(id){
             this.$store.state.activeComponent = 'Project';
             this.$eventHub.$emit('cardClicked', id);
-        },
-        delItem(id){
-            this.$eventHub.$emit('deleteItem', id);
         }
     } 
 }

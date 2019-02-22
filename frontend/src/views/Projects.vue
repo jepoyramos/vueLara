@@ -6,7 +6,7 @@
     <hr>
     <span >{{this.$store.state.activeComponent}}</span>
     <div v-if="this.$store.state.activeComponent == 'ProjectGrid'" class="o-projects__button">
-        <div @click="addProject">Add Project</div>
+        <div @click="loadComponent('ProjectCreate')">Add Project</div>
     </div>
   </div>
 </template>
@@ -24,15 +24,23 @@ export default {
         {projectTitle: "Project 1", projectDescription: "This is the first project"},
         {projectTitle: "Project 2", projectDescription: "This is the second project"},
       ],
-      
+      cardId: '',
+      cardTitle: '',
+      cardDescription: '',
+      projectTitle: '',
+      projectDescription: ''
     }
   },
   created(){
-    this.$eventHub.$on('deleteItem', this.delItem);
-    this.$eventHub.$on('cardClicked', this.activeCompProps);
+    this.$eventHub.$on('cardClicked', this.clickedACard);
+    this.$eventHub.$on('returnGrid', this.loadComponent);
+    this.$eventHub.$on('deleteProject', this.deleteItem);
+    this.$eventHub.$on('updateProject', this.updateItem);
   },
   beforeDestroy(){
-    this.$eventHub.$off('deleteItem');
+    this.$eventHub.$off('cardClicked');
+    this.$eventHub.$off('returnGrid');
+    this.$eventHub.$off('deleteProject');
   },
   components: {
     ProjectGrid: ProjectGrid,
@@ -40,29 +48,47 @@ export default {
     Project
   },
   computed: {
-    activeCompProps(id){
+    activeCompProps(){
       if(this.$store.state.activeComponent === 'ProjectGrid'){
         return { projects: this.projects}
       }else if(this.$store.state.activeComponent === 'Project'){
         return {
-          ID: id,
+          ID: this.cardId,
+          Title: this.cardTitle,
+          Description: this.cardDescription,
         }
       }else{
-        return {projects: ''}
+        alert(this.projectTitle);
+        return {
+          projectTitle: this.projectTitle,
+          projectDescription:this.projectDescription
+        }
       }
     }
   },
   methods: {
-    addProject(){
-      this.$store.state.activeComponent = 'ProjectCreate';
-    },
     pushProject(newProject){
       this.projects.push(newProject);
-      this.$store.state.activeComponent = 'ProjectCreate';
-      this.$store.state.activeComponent = 'ProjectGrid';
+      this.loadComponent('ProjectGrid');
     },
-    delItem(id){
-      alert("this is " + id);
+    deleteItem(id){
+      this.projects.splice(id, 1);
+      this.loadComponent('ProjectGrid');
+      alert("Project deleted " + id);
+    },
+     updateItem(id){
+       alert('item number ' + id);
+      this.projectTitle = this.projects[id].projectTitle,
+      this.projectDescription = this.projects[id].projectDescription
+      this.loadComponent('ProjectCreate');
+    },
+    clickedACard(id){
+      this.cardId = id;
+      this.cardTitle = this.projects[id].projectTitle;
+      this.cardDescription = this.projects[id].projectDescription;
+    },
+    loadComponent(comp){
+      this.$store.state.activeComponent = comp;
     }
   }
 }

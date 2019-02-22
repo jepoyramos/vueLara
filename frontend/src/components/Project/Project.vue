@@ -1,9 +1,12 @@
 <template>
     <div >
-        <div class="c-projectCard">
-            <h2 slot="projectTitle">{{projectTitle}}</h2>
-            <p slot="projectDescription">{{projectDescription}}</p>
-            <p slot="projectID">{{projectID}}</p>
+        <button @click="back">Back</button>
+        <button @click="deleteProject(ID)">Delete</button>
+        <button @click="updateProject(ID)">Update</button>
+        <div class="c-project">
+            <h2 slot="projectTitle">{{Title}}</h2>
+            <p slot="projectDescription">{{Description}}</p>
+            <p slot="projectID">{{ID}}</p>
         </div>
     </div>
 </template>
@@ -11,9 +14,21 @@
 export default {
     name: 'Project',
     props: {
-        projectTitle: String,
-        projectDescription: String,
-        projectID: Number
+        Title: String,
+        Description: String,
+        ID: Number
+    },
+    methods:{
+        back(){
+            this.$eventHub.$emit('returnGrid', 'ProjectGrid');
+        },
+        deleteProject(ID){
+            this.$eventHub.$emit('deleteProject', ID);
+        },
+        updateProject(ID){
+            alert('update' + ID);
+            this.$eventHub.$emit('updateProject', ID);
+        }
     }
 }
 </script>

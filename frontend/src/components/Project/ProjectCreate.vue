@@ -1,10 +1,13 @@
 <template>
     <div class="o-projectAdd">
         <form>
-            <input type="text" v-model="newProject.projectTitle" placeholder="Project Title">
+            <input type="text" v-model="newProject.projectTitle" placeholder="Project Title" >
             <textarea name="" id="" cols="30" rows="10" v-model="newProject.projectDescription" placeholder="Project Description"></textarea>
             <button @click.prevent="createProject">Create Project</button>
+            <button @click.prevent="updateProject">Update Project</button>
         </form>
+        <span>{{projectTitle}}</span>
+        <span>{{projectDescription}}</span>
     </div>
 </template>
 <script>
@@ -16,12 +19,13 @@ export default {
                 projectTitle: '',
                 projectDescription: ''
             },
-            isCreated: false
+            Project:{}
         }
     },
     props: {
         projectTitle: String,
-        projectDescription: String
+        projectDescription: String,
+        create: Boolean
     },
     methods: {
         createProject(){
@@ -33,6 +37,9 @@ export default {
                 this.newProject.projectTitle = '';
                 this.newProject.projectDescription = '';
             }
+        },
+        projectModel(){
+            
         }
     }
 }
