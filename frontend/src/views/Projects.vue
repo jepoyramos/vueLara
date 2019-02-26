@@ -2,10 +2,10 @@
   <div class="c-projects">
     <h1>This is Projects View</h1>
     <!-- <ProjectGrid :projects="projects" @newProjectAdded="pushProject" /> -->
-    <component :is="this.$store.state.activeComponent"  v-bind="activeCompProps"  @newProjectAdded="pushProject"></component>
+    <component :is="this.$store.getters.getActiveComponent"  v-bind="activeCompProps"  @newProjectAdded="pushProject"></component>
     <hr>
-    <span >{{this.$store.state.activeComponent}}</span>
-    <div v-if="this.$store.state.activeComponent == 'ProjectGrid'" class="o-projects__button">
+    <span >{{this.$store.getters.getActiveComponent}}</span>
+    <div v-if="this.$store.getters.getActiveComponent == 'ProjectGrid'" class="o-projects__button">
         <div @click="loadComponent('ProjectCreate')">Add Project</div>
     </div>
   </div>
@@ -49,16 +49,16 @@ export default {
   },
   computed: {
     activeCompProps(){
-      if(this.$store.state.activeComponent === 'ProjectGrid'){
+      if(this.$store.getters.getActiveComponent === 'ProjectGrid'){
         return { projects: this.projects}
-      }else if(this.$store.state.activeComponent === 'Project'){
+      }else if(this.$store.getters.getActiveComponent === 'Project'){
         return {
           ID: this.cardId,
           Title: this.cardTitle,
           Description: this.cardDescription,
         }
       }else{
-        alert(this.projectTitle);
+        // alert(this.projectTitle);
         return {
           projectTitle: this.projectTitle,
           projectDescription:this.projectDescription
@@ -88,7 +88,8 @@ export default {
       this.cardDescription = this.projects[id].projectDescription;
     },
     loadComponent(comp){
-      this.$store.state.activeComponent = comp;
+      // this.$store.state.activeComponent = comp;
+      this.$store.dispatch("set_activeComponent",comp); //dispatch an action
     }
   }
 }
