@@ -16,6 +16,8 @@
 import ProjectGrid from '../components/Project/ProjectGrid.vue'
 import ProjectCreate from '../components/Project/ProjectCreate.vue'
 import Project from '../components/Project/Project.vue'
+import axios from 'axios'
+
 export default {
   name: 'Projects',
   data () {
@@ -36,6 +38,19 @@ export default {
     this.$eventHub.$on('returnGrid', this.loadComponent);
     this.$eventHub.$on('deleteProject', this.deleteItem);
     this.$eventHub.$on('updateProject', this.updateItem);
+    //get projects from an api request
+    axios.get('/projects.json')
+      .then(res => {
+        const data = res.data
+        const projects = []
+        for (let key in data){
+          const project = data[key]
+          project.id = key // assigns a key value to a created project key
+          projects.push(project)
+        }
+        this.projects = projects
+      })
+      .catch(error => console.log(error))
   },
   beforeDestroy(){
     this.$eventHub.$off('cardClicked');
@@ -69,6 +84,10 @@ export default {
   methods: {
     pushProject(newProject){
       this.projects.push(newProject);
+      console.log(newProject);
+      axios.post('/projects.json', newProject)
+      .then(res => console.log(res))
+      .catch(error => console.log(error));
       this.loadComponent('ProjectGrid');
     },
     deleteItem(id){
