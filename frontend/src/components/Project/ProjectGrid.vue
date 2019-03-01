@@ -4,8 +4,8 @@
             v-for='(project, index) in projects' 
             :key="index" 
             :ID="index"
-            :cardTitle= project.projectTitle
-            :cardDescription= project.projectDescription
+            :cardTitle=project.projectTitle
+            :cardDescription=project.projectDescription
             />
     </div>
 </template>

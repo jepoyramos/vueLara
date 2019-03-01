@@ -22,10 +22,7 @@ export default {
   name: 'Projects',
   data () {
     return {
-      projects: [
-        {projectTitle: "Project 1", projectDescription: "This is the first project"},
-        {projectTitle: "Project 2", projectDescription: "This is the second project"},
-      ],
+      projects: [],
       cardId: '',
       cardTitle: '',
       cardDescription: '',
@@ -49,6 +46,7 @@ export default {
           projects.push(project)
         }
         this.projects = projects
+        // console.log(this.projects);
       })
       .catch(error => console.log(error))
   },
@@ -75,8 +73,8 @@ export default {
       }else{
         // alert(this.projectTitle);
         return {
-          projectTitle: this.projectTitle,
-          projectDescription:this.projectDescription
+          Title: this.projectTitle,
+          Description:this.projectDescription
         }
       }
     }
@@ -91,9 +89,14 @@ export default {
       this.loadComponent('ProjectGrid');
     },
     deleteItem(id){
-      this.projects.splice(id, 1);
+      // this.projects.splice(id, 1);
       this.loadComponent('ProjectGrid');
       alert("Project deleted " + id);
+      // console.log(this.projects);
+      console.log(this.projects[id].id);
+      axios.get('/projects.json'+ '/' + this.projects[id].id)
+        .then( res => console.log(res))
+        .catch(error => console.log(error))
     },
      updateItem(id){
        alert('item number ' + id);
