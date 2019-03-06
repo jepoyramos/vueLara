@@ -6,7 +6,7 @@ import axios from 'axios'
 
 Vue.config.productionTip = false
 //set dafault configration for axios baseURL
-axios.defaults.baseURL = 'https://managementsystem-37a44.firebaseio.com'
+axios.defaults.baseURL = 'http://vuelara_managementsys.test/api/'
 Vue.prototype.$eventHub = new Vue();
 
 new Vue({

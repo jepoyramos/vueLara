@@ -36,7 +36,7 @@ export default {
     this.$eventHub.$on('deleteProject', this.deleteItem);
     this.$eventHub.$on('updateProject', this.updateItem);
     //get projects from an api request
-    axios.get('/projects.json')
+    axios.get('/projects')
       .then(res => {
         const data = res.data
         const projects = []
@@ -94,7 +94,7 @@ export default {
       alert("Project deleted " + id);
       // console.log(this.projects);
       console.log(this.projects[id].id);
-      axios.get('/projects.json'+ '/' + this.projects[id].id)
+      axios.get('/projects'+ '/' + this.projects[id].id)
         .then( res => console.log(res))
         .catch(error => console.log(error))
     },
